@@ -48,18 +48,17 @@ func squarer(in chan int, out chan int) {
 }
 
 func merger(odd chan int, even chan int, ans chan int) {
-	// fan-in pattern
 	for odd != nil || even != nil {
 		select {
-		case v, ok := <-odd:
+		case a, ok := <-odd:
 			if ok {
-				ans <- v
+				ans <- a
 			} else {
 				odd = nil
 			}
-		case v, ok := <-even:
+		case a, ok := <-even:
 			if ok {
-				ans <- v
+				ans <- a
 			} else {
 				even = nil
 			}
