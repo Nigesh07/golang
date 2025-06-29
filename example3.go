@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
 func main() {
 	res := make(chan int)
 	oddTomerger := make(chan int)
-	evenTosquarer := make(chan int)
+	evenTosquarer := make(chan int, 10)
 	squarerTomerger := make(chan int)
 	merged := make(chan int)
 	done := make(chan struct{})
@@ -22,7 +23,7 @@ func main() {
 }
 
 func helper(ans chan int) {
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 10; i++ {
 		ans <- i
 	}
 	close(ans)
@@ -42,6 +43,7 @@ func oddevenspliter(num chan int, odd chan int, even chan int) {
 
 func squarer(in chan int, out chan int) {
 	for i := range in {
+		time.Sleep(2 * time.Second)
 		out <- i * i
 	}
 	close(out)
